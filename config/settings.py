@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+# Inicializar environ
+env = environ.Env()
+# Leer el archivo .env si existe
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +33,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['periodico.23130019.sfs2.alu23130019.com', '127.0.0.1', 'localhost', '*']
 
+# Configuración de Proxy para generación correcta de dominios e HTTPS
+#USE_X_FORWARDED_HOST = True
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#CSRF_TRUSTED_ORIGINS = ['https://periodico.23130019.sfs2.alu23130019.com']
 # Application definition
 
 INSTALLED_APPS = [
@@ -137,5 +147,24 @@ LOGOUT_REDIRECT_URL = 'inicio'
 # Formularios con Bootstrap
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"  # nuevo
 CRISPY_TEMPLATE_PACK = "bootstrap5"  # nuevo
-# Correo
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # nuevo
+
+ #Correo
+EMAIL_BACKEND = env.str(
+    "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+)  # nuevo
+EMAIL_HOST = env.str("EMAIL_HOST", default="")  # nuevo
+EMAIL_PORT = env.int("EMAIL_PORT", default=465)  # nuevo
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=True)  # nuevo
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")  # nuevo
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")  # nuevo
+EMAIL_TIMEOUT = 10  # nuevo
+DEFAULT_FROM_EMAIL = env.str(
+    "DEFAULT_FROM_EMAIL", default="Periódico <no-responder@localhost>"
+)  # nuevo
+SERVER_EMAIL = DEFAULT_FROM_EMAIL  # nuevo
+
+# Configuración de correo para pruebas/desarrollo
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'no-responder@localhost'
