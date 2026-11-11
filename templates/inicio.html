@@ -1,21 +1,16 @@
-<!-- templates/inicio.html-->
+<!-- templates/inicio.html -->
 {% extends "base.html" %}
 
-{% block titulo %}Inicio {% endblock titulo %}
+{% block titulo %}Inicio{% endblock titulo %}
 
 {% block contenido %}
-   <h1>Periódico</h1>
-   {% if user.is_authenticated %}
-      <p>Hola, {{ user.username }}.</p>
-      <form action="{% url 'logout' %}" method="post">
-         {% csrf_token %}
-         <button type="submit">Cerrar sesion</button>
-      </form>
+  <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+    <h1 class="display-5 fw-bold">Periódico</h1>
+    {% if user.is_authenticated %}
+      <p class="fs-4">Hola, {{ user.username }}. Qué bueno verte de nuevo.</p>
     {% else %}
-      <p>No has iniciado sesion.</p>
-      <p>
-        <a href="{% url 'login' %}">Iniciar sesion</a> |
-        <a href="{% url 'registro' %}">Registrarse</a>
-      </p>
-      {% endif %}
-    {% endblock contenido %}
+      <p class="fs-4">Noticias escritas por nuestra comunidad.</p>
+      <a class="btn btn-primary btn-lg" href="{% url 'registro' %}">Crear una cuenta</a>
+    {% endif %}
+  </div>
+{% endblock contenido %}

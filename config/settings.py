@@ -25,21 +25,24 @@ SECRET_KEY = 'django-insecure-o!3=h4^lw(9!n4x4@a93q7dn22$pg@-l(l22v#e=qir7&zo4gf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['periodico.23130019.sfs2.alu23130019.com', '127.0.0.1', 'localhost', '*']
 
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     "crispy_forms",  # nuevo
+    "crispy_bootstrap5",  # nuevo
     'cuentas',
     'paginas.apps.PaginasConfig',
-]
+
+] 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,5 +130,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'cuentas.UsuarioPersonalizado'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT = 'inicio'
+LOGIN_REDIRECT_URL = 'inicio'
 LOGOUT_REDIRECT_URL = 'inicio'
+
+#CSRF_TRUSTED_ORIGINS = env.list(CSRF_TRUSTED_ORIGINS', default=[])
+# Formularios con Bootstrap
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"  # nuevo
+CRISPY_TEMPLATE_PACK = "bootstrap5"  # nuevo
+# Correo
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # nuevo

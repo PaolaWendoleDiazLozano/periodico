@@ -54,3 +54,8 @@ class PruebasRegistro(TestCase):
         usuario = get_user_model().objects.get(username="lectora")
         self.assertEqual(usuario.email, "lectora@ejemplo.mx")
         self.assertEqual(usuario.edad, 19)
+
+    def test_registro_con_bootstrap(self):
+        respuesta = self.client.get(reverse("registro"))
+        self.assertContains(respuesta, "bootstrap.min.css")
+        self.assertContains(respuesta, "form-control")
