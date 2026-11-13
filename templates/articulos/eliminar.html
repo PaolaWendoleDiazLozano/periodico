@@ -1,0 +1,14 @@
+<!-- templates/articulos/eliminar.html -->
+{% extends "base.html" %}
+
+{% block titulo %}Eliminar artículo{% endblock titulo %}
+
+{% block contenido %}
+  <h1 class="h3 mb-3">Eliminar artículo</h1>
+  <p>¿Seguro que quieres eliminar "{{ articulo.titulo }}"? Esta acción no se puede deshacer.</p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a class="btn btn-outline-secondary" href="{{ articulo.get_absolute_url }}">Cancelar</a>
+  </form>
+{% endblock contenido %}

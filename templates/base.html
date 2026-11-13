@@ -20,6 +20,19 @@
       </button>
 
       <div class="collapse navbar-collapse" id="menu">
+        <!-- Menú a la izquierda -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'articulo_lista' %}">Artículos</a>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'articulo_nuevo' %}">Escribir</a>
+            </li>
+          {% endif %}
+        </ul>
+
+        <!-- Menú a la derecha (Usuario / Sesión) -->
         <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
             <li class="nav-item dropdown">
@@ -27,8 +40,6 @@
                  data-bs-toggle="dropdown" aria-expanded="false">
                 {{ user.username }}
               </a>
-
-              <!-- CÓDIGO DEL PROFESOR -->
               <ul class="dropdown-menu dropdown-menu-end">
                 <li>
                   <a class="dropdown-item" href="{% url 'password_change' %}">Cambiar contraseña</a>
@@ -41,7 +52,6 @@
                   </form>
                 </li>
               </ul>
-
             </li>
           {% else %}
             <li class="nav-item">
@@ -61,7 +71,7 @@
     {% endblock contenido %}
   </main>
 
-  <!-- JS Bootstrap 5 (Necesario para que abra el menú al hacer clic) -->
+  <!-- JS Bootstrap 5 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

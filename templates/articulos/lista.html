@@ -1,0 +1,23 @@
+<!-- templates/articulos/lista.html -->
+{% extends "base.html" %}
+
+{% block titulo %}Artículos{% endblock titulo %}
+
+{% block contenido %}
+  <h1 class="h3 mb-4">Artículos</h1>
+  {% for articulo in articulo_list %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h2 class="card-title h5">
+          <a href="{{ articulo.get_absolute_url }}">{{ articulo.titulo }}</a>
+        </h2>
+        <p class="card-subtitle mb-2 text-body-secondary small">
+          Por {{ articulo.autor.username }} · {{ articulo.fecha|date:"j \d\e F \d\e Y"|lower }}
+        </p>
+        <p class="card-text">{{ articulo.cuerpo|truncatewords:30 }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <p>Todavía no hay artículos.</p>
+  {% endfor %}
+{% endblock contenido %}

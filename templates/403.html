@@ -1,0 +1,12 @@
+<!-- templates/403.html -->
+{% extends "base.html" %}
+
+{% block titulo %}Acceso denegado{% endblock titulo %}
+
+{% block contenido %}
+  <div class="alert alert-danger">
+    <h1 class="h4">Acceso denegado</h1>
+    <p class="mb-0">No tienes permiso para ver esta página o realizar esta acción.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'articulo_lista' %}">Ver los artículos</a>
+{% endblock contenido %}
