@@ -20,3 +20,20 @@ class Articulo(models.Model):
 
     def get_absolute_url(self):
         return reverse("articulo_detalle", kwargs={"pk": self.pk})
+
+class Comentario(models.Model):
+    articulo = models.ForeignKey(
+        Articulo, on_delete=models.CASCADE, related_name="comentarios"
+    )
+    comentario = models.CharField(max_length=500)
+    fecha = models.DateTimeField(auto_now_add=True)
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["fecha"]
+
+    def __str__(self):
+        return self.comentario
+
+    def get_absolute_url(self):
+        return self.articulo.get_absolute_url()

@@ -1,0 +1,41 @@
+<!-- templates/articulos/detalle.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+  <article class="mb-4">
+    <h1>{{ articulo.titulo }}</h1>
+    <p class="text-body-secondary">
+      Por {{ articulo.autor }} | {{ articulo.fecha }}
+    </p>
+    <p>{{ articulo.cuerpo }}</p>
+  </article>
+
+  <hr>
+
+  <section class="mb-4">
+    <h2 class="h5">Comentarios ({{ articulo.comentarios.count }})</h2>
+    {% for comentario in articulo.comentarios.all %}
+      <div class="border-start border-3 ps-3 mb-3">
+        <p class="mb-1">{{ comentario.comentario }}</p>
+        <p class="small text-body-secondary mb-0">
+          {{ comentario.autor.username }} · {{ comentario.fecha|date:"j \d\e F, H:i"|lower }}
+        </p>
+      </div>
+    {% empty %}
+      <p class="text-body-secondary">Todavía no hay comentarios.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+      <form action="{% url 'articulo_comentar' articulo.pk %}" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Comentar</button>
+      </form>
+    {% else %}
+      <p><a href="{% url 'login' %}?next={{ request.path }}">Inicia sesión</a> para comentar.</p>
+    {% endif %}
+  </section>
+
+  <p><a href="{% url 'articulo_lista' %}">Volver a los artículos</a></p>
+{% endblock contenido %}
