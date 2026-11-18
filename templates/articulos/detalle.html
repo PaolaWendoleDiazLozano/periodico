@@ -13,13 +13,26 @@
 
   <hr>
 
-  <section class="mb-4">
+  <section id="comentarios" class="mb-4"></section>#esto se agrego por los retos
     <h2 class="h5">Comentarios ({{ articulo.comentarios.count }})</h2>
     {% for comentario in articulo.comentarios.all %}
       <div class="border-start border-3 ps-3 mb-3">
         <p class="mb-1">{{ comentario.comentario }}</p>
         <p class="small text-body-secondary mb-0">
-          {{ comentario.autor.username }} · {{ comentario.fecha|date:"j \d\e F, H:i"|lower }}
+          {{ comentario.autor.username }}
+          {# Reto 2: etiqueta Autor si quien comenta escribió el artículo #}
+          {% if comentario.autor == articulo.autor %}
+            <span class="badge text-bg-secondary">Autor</span>
+          {% endif %}
+          · {{ comentario.fecha|date:"j \d\e F, H:i"|lower }}
+
+          {# Reto 3: botón para eliminar el comentario solo si el usuario es su autor #}
+          {% if user == comentario.autor %}
+            <form action="{% url 'comentario_eliminar' comentario.pk %}" method="post" class="d-inline ms-2">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link btn-sm text-danger p-0 align-baseline">Eliminar</button>
+            </form>
+          {% endif %}
         </p>
       </div>
     {% empty %}
@@ -35,7 +48,7 @@
     {% else %}
       <p><a href="{% url 'login' %}?next={{ request.path }}">Inicia sesión</a> para comentar.</p>
     {% endif %}
-  </section>
+    </section>
 
   <p><a href="{% url 'articulo_lista' %}">Volver a los artículos</a></p>
 {% endblock contenido %}

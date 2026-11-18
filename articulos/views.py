@@ -18,6 +18,7 @@ class VistaListaArticulos(ListView):
     model = Articulo
     template_name = "articulos/lista.html"
 
+
 class VistaDetalleArticulo(DetailView):
     model = Articulo
     template_name = "articulos/detalle.html"
@@ -26,6 +27,7 @@ class VistaDetalleArticulo(DetailView):
         context = super().get_context_data(**kwargs)
         context["form"] = FormularioComentario()
         return context
+
 
 class VistaComentar(LoginRequiredMixin, CreateView):  # nuevo
     model = Comentario
@@ -46,6 +48,11 @@ class VistaComentar(LoginRequiredMixin, CreateView):  # nuevo
         form.instance.articulo = self.articulo
         form.instance.autor = self.request.user
         return super().form_valid(form)
+
+    # Reto 4: redirigir directo a la sección de comentarios
+    def get_success_url(self):
+        return f"{self.articulo.get_absolute_url()}#comentarios"
+
 
 class VistaCrearArticulo(LoginRequiredMixin, CreateView):
     model = Articulo
@@ -73,3 +80,15 @@ class VistaEliminarArticulo(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
     def test_func(self):
         return self.get_object().autor == self.request.user
+
+
+# Reto 3: eliminar comentarios propios
+class VistaEliminarComentario(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comentario
+    http_method_names = ["post"]
+
+    def test_func(self):
+        return self.get_object().autor == self.request.user
+
+    def get_success_url(self):
+        return f"{self.object.articulo.get_absolute_url()}#comentarios"

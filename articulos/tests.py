@@ -119,7 +119,8 @@ class PruebasComentarios(TestCase):
     def test_comentar(self):
         self.client.force_login(self.autora)
         respuesta = self.client.post(self.url_comentar, {"comentario": "¡Gracias!"})
-        self.assertRedirects(respuesta, self.articulo.get_absolute_url())
+        # Actualizado con #comentarios por el Reto 4:
+        self.assertRedirects(respuesta, f"{self.articulo.get_absolute_url()}#comentarios")
         nuevo = Comentario.objects.get(comentario="¡Gracias!")
         self.assertEqual(nuevo.autor, self.autora)
         self.assertEqual(nuevo.articulo, self.articulo)
@@ -135,3 +136,24 @@ class PruebasComentarios(TestCase):
         self.client.force_login(self.autora)
         respuesta = self.client.get(self.url_comentar)
         self.assertEqual(respuesta.status_code, 405)
+
+#Estas pruebas son en base a los retos
+    def test_eliminar_comentario_propio(self):
+        self.client.force_login(self.lector)
+        url = reverse("comentario_eliminar", args=[self.comentario.pk])
+        respuesta = self.client.post(url)
+        self.assertRedirects(respuesta, f"{self.articulo.get_absolute_url()}#comentarios")
+        self.assertEqual(Comentario.objects.count(), 0)
+
+    def test_eliminar_comentario_ajeno_prohibido(self):
+        self.client.force_login(self.autora)  # autora no escribio este comentario
+        url = reverse("comentario_eliminar", args=[self.comentario.pk])
+        respuesta = self.client.post(url)
+        self.assertEqual(respuesta.status_code, 403)
+        self.assertEqual(Comentario.objects.count(), 1)
+
+    def test_eliminar_comentario_sin_sesion(self):
+        url = reverse("comentario_eliminar", args=[self.comentario.pk])
+        respuesta = self.client.post(url)
+        self.assertRedirects(respuesta, f"{reverse('login')}?next={url}")
+        self.assertEqual(Comentario.objects.count(), 1)
