@@ -163,9 +163,3 @@ DEFAULT_FROM_EMAIL = env.str(
     "DEFAULT_FROM_EMAIL", default="Periódico <no-responder@localhost>"
 )  # nuevo
 SERVER_EMAIL = DEFAULT_FROM_EMAIL  # nuevo
-
-# Configuración de correo para pruebas/desarrollo
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-DEFAULT_FROM_EMAIL = 'no-responder@localhost'
