@@ -2,17 +2,20 @@
 from django.urls import path
 
 from .views import (
-    VistaComentar,  # nuevo
+    VistaComentar,
     VistaCrearArticulo,
     VistaDetalleArticulo,
     VistaEditarArticulo,
     VistaEliminarArticulo,
+    VistaEliminarComentario,#nuevo de los retos
     VistaListaArticulos,
-    VistaEliminarComentario#nuevo de los retos
+    VistaMisArticulos,  # nuevo de los retos
+    
 )
 
 urlpatterns = [
     path("", VistaListaArticulos.as_view(), name="articulo_lista"),
+    path("mis-articulos/", VistaMisArticulos.as_view(), name="mis_articulos"),  # <-- nueva
     path("nuevo/", VistaCrearArticulo.as_view(), name="articulo_nuevo"),
     path("<int:pk>/", VistaDetalleArticulo.as_view(), name="articulo_detalle"),
     path("<int:pk>/editar/", VistaEditarArticulo.as_view(), name="articulo_editar"),

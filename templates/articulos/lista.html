@@ -13,7 +13,7 @@
         </h2>
         <p class="card-subtitle mb-2 text-body-secondary small">
           Por {{ articulo.autor.username }} · {{ articulo.fecha|date:"j \d\e F \d\e Y"|lower }}
-          #reto 1· {{ articulo.comentarios.count }} comentario{{ articulo.comentarios.count|pluralize }}
+          · {{ articulo.comentarios.count }} comentario{{ articulo.comentarios.count|pluralize }}
         </p>
         <p class="card-text">{{ articulo.cuerpo|truncatewords:30 }}</p>
       </div>

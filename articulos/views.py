@@ -17,7 +17,13 @@ from .models import Articulo, Comentario  # nuevo
 class VistaListaArticulos(ListView):
     model = Articulo
     template_name = "articulos/lista.html"
+#Reto Tema 2.18
+class VistaMisArticulos(LoginRequiredMixin, ListView):
+    model = Articulo
+    template_name = "articulos/mis_articulos.html"
 
+    def get_queryset(self):
+        return Articulo.objects.filter(autor=self.request.user)
 
 class VistaDetalleArticulo(DetailView):
     model = Articulo

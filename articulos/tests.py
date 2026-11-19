@@ -83,6 +83,24 @@ class PruebasArticulos(TestCase):
         self.assertRedirects(respuesta, reverse("articulo_lista"))
         self.assertFalse(Articulo.objects.filter(pk=self.articulo.pk).exists())
 
+    # RETO TEMA 2.18: Pruebas de la página "Mis artículos"
+    def test_mis_articulos_requiere_sesion(self):
+        respuesta = self.client.get(reverse("mis_articulos"))
+        self.assertRedirects(
+            respuesta, f"{reverse('login')}?next={reverse('mis_articulos')}"
+        )
+
+    def test_mis_articulos_solo_muestra_los_propios(self):
+        Articulo.objects.create(
+            titulo="Artículo de otro", cuerpo="Texto ajeno.", autor=self.otro
+        )
+        self.client.force_login(self.autora)
+        respuesta = self.client.get(reverse("mis_articulos"))
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTemplateUsed(respuesta, "articulos/mis_articulos.html")
+        self.assertContains(respuesta, "Un buen título")
+        self.assertNotContains(respuesta, "Artículo de otro")
+
 class PruebasComentarios(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -110,6 +128,11 @@ class PruebasComentarios(TestCase):
         self.assertContains(respuesta, "Comentarios (1)")
         self.assertContains(respuesta, "Muy interesante.")
         self.assertContains(respuesta, "Inicia sesión")
+
+    # RETO TEMA 2.19: Conteo de comentarios en la lista de artículos
+    def test_lista_muestra_conteo_comentarios(self):
+        respuesta = self.client.get(reverse("articulo_lista"))
+        self.assertContains(respuesta, "1 comentario")
 
     def test_comentar_requiere_sesion(self):
         respuesta = self.client.post(self.url_comentar, {"comentario": "Hola."})

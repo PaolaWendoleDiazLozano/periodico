@@ -1,4 +1,5 @@
 # cuentas/tests.py
+import re #para buscar el enlace dentro del texto de nuestro correo
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
