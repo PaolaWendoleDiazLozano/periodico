@@ -13,14 +13,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import environ
 
-# Inicializar environ
-env = environ.Env()
-# Leer el archivo .env si existe
-environ.Env.read_env()
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -154,7 +150,7 @@ EMAIL_BACKEND = env.str(
     "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
 )  # nuevo
 EMAIL_HOST = env.str("EMAIL_HOST", default="")  # nuevo
-EMAIL_PORT = env.int("EMAIL_PORT", default=587)  # nuevo
+EMAIL_PORT = env.int("EMAIL_PORT", default=465)  # nuevo
 EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=True)  # nuevo
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="")  # nuevo
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="")  # nuevo
