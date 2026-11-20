@@ -13,10 +13,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import environ
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# Inicializar environ
 env = environ.Env()
-env.read_env(BASE_DIR / ".env")
+# Leer el archivo .env si existe
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+env.read_env(BASE_DIR / '.env')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -25,9 +31,10 @@ env.read_env(BASE_DIR / ".env")
 SECRET_KEY = 'django-insecure-o!3=h4^lw(9!n4x4@a93q7dn22$pg@-l(l22v#e=qir7&zo4gf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = ['periodico.23130019.sfs2.alu23130019.com', '127.0.0.1', 'localhost', '*']
+CSRF_TRUSTED_ORIGINS = ['https://periodico.23130019.sfs2.alu23130019.com', 'http://periodico.23130019.sfs2.alu23130019.com']
 
 # Configuración de Proxy para generación correcta de dominios e HTTPS
 #USE_X_FORWARDED_HOST = True
